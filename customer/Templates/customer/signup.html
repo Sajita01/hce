@@ -1,0 +1,38 @@
+<!-- signup.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Signup</title>
+  
+
+    
+</head>
+<body>
+    <div class="signup-wrapper">
+        <div class="signup-container"></div>
+            <h1>Customer Signup</h1>
+            <form id="signup-form" hx-post="{% url 'signup' %}" hx-target="#customer-details" method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                <button type="submit">Signup</button>
+                
+            </form>
+            <div id="customer-details" hx-swap="outerHTML">
+                  {% include 'customer/customer_details.html' %}
+            </div>
+        </div>
+    </div>    
+    <script src="https://unpkg.com/htmx.org@1.5.0/dist/htmx.js"></script>
+<!-- signup.html -->
+    <script>
+
+    document.getElementById('signup-form').addEventListener('htmx:success', function(event) {
+        var details = event.detail.xhr.response;
+        document.getElementById('customer-details').innerHTML = details;
+    });
+    </script>
+</body>
+</html>
